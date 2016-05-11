@@ -9,6 +9,7 @@ import interfaces.InterfaceServidor;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteObject;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,6 +17,7 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ServerEngine extends UnicastRemoteObject implements InterfaceServidor{
 
+    
     public ServerEngine() throws RemoteException{
         super();
     }
