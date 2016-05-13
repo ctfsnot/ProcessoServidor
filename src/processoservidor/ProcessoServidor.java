@@ -94,5 +94,11 @@ public class ProcessoServidor {
         serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "Bahia", 350.00f));
         serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "Rio Grande do Sul", 120.00f));
         
+        serverEngine.cadastraOfertaHospedagem(new OfertaHospedagem("Curitiba", 3, 75.00f));
+        serverEngine.cadastraOfertaHospedagem(new OfertaHospedagem("São Paulo", 2, 225.00f));
+        serverEngine.cadastraOfertaHospedagem(new OfertaHospedagem("Florianopolis", 2, 215.00f));
+        serverEngine.cadastraOfertaHospedagem(new OfertaHospedagem("Bahia", 3, 375.00f));
+        serverEngine.cadastraOfertaHospedagem(new OfertaHospedagem("Rio Grande do Sul", 4, 175.00f));
+        
     }
 }

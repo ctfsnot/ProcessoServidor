@@ -27,13 +27,19 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
     }
     
     @Override
-    public void compraPassagem() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized boolean compraPassagem(int passagem) throws RemoteException {
+        Object ret = listaDeVoos.remove(passagem);
+        if(ret != null)
+            return true;
+        else return false;
     }
 
     @Override
-    public void compraHospedagem() throws RemoteException {
-        System.out.println("Ok");
+    public synchronized boolean compraHospedagem(int hospedagem) throws RemoteException {
+        Object ret = listaDeHospedagens.remove(hospedagem);
+        if(ret != null)
+            return true;
+        else return false;
     }
 
     @Override
@@ -62,5 +68,21 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
     }
     public void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem){
         listaDeHospedagens.add(novaOfertaDeHospedagem);
+    }
+
+    @Override
+    public Object[] listaHospedagens() throws RemoteException {
+        ArrayList<String> results = new ArrayList();
+        
+        for(int i = 0; i < this.listaDeHospedagens.size(); i++){
+            String r = "";
+            r += "Em "+ listaDeHospedagens.get(i).getLocal();
+            r += ", com "+ listaDeHospedagens.get(i).getQuartos() + " quartos de casal";
+            r += " - R$: " + listaDeHospedagens.get(i).getPreço();
+            
+            results.add(r);
+        }
+        
+        return results.toArray();
     }
 }
