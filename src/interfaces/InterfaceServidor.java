@@ -7,6 +7,7 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import processoservidor.OfertaVoo;
 
 /**
  *
@@ -15,5 +16,8 @@ import java.rmi.RemoteException;
 public interface InterfaceServidor extends Remote{
     public void compraPassagem() throws RemoteException;
     public void compraHospedagem() throws RemoteException;
-    public void registraInteresse(String cliente, String tipo_interesse) throws RemoteException;    
+    public void registraInteresse(String cliente, String tipo_interesse) throws RemoteException;
+    public Object[] listaPassagens() throws RemoteException;
+
+    
 }

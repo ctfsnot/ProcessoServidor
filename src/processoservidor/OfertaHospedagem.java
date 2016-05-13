@@ -11,7 +11,6 @@ package processoservidor;
  */
 public class OfertaHospedagem {
 
-
     private String local;
     private int quartos;
     private float preço;

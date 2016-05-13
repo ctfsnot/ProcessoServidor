@@ -15,13 +15,11 @@ public class OfertaVoo {
 
     private String origem;
     private String destino;
-    private Date data;
     private float preço;
     
-    public OfertaVoo(String origem, String destino, Date data, float preço) {
+    public OfertaVoo(String origem, String destino, float preço) {
         this.origem = origem;
         this.destino = destino;
-        this.data = data;
         this.preço = preço;
     }
 
@@ -41,13 +39,6 @@ public class OfertaVoo {
         this.destino = destino;
     }
 
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
 
     public float getPreço() {
         return preço;
@@ -57,6 +48,4 @@ public class OfertaVoo {
     public void setPreço(float preço) {
         this.preço = preço;
     }
-    
-    
 }

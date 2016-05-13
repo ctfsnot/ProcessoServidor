@@ -12,6 +12,7 @@ import java.rmi.registry.Registry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -20,18 +21,15 @@ import java.util.Scanner;
  */
 public class ProcessoServidor {
 
-    private static InterfaceServidor serverEngine;
+    private static ServerEngine serverEngine ;
     private static Registry servidorNomes;
     
-    private static ArrayList<OfertaHospedagem> listaDeHospedagens;
-    private static ArrayList<OfertaVoo> listaDeVoos;
-    
     public static void main(String[] args) throws RemoteException, ParseException {
-        serverEngine = new ServerEngine(); //objeto remoto do servidor
-        
+        serverEngine = new ServerEngine(); //objeto remoto do servidor        
         servidorNomes = LocateRegistry.createRegistry(8888);
         servidorNomes.rebind("ServerEngine", serverEngine);
         
+        makeData();  //gera dados para teste
         menu();
    
     }
@@ -59,10 +57,9 @@ public class ProcessoServidor {
                     OfertaVoo novaOfertaDeVoo = new OfertaVoo(
                             parts_voo[0], 
                             parts_voo[1], 
-                            (new SimpleDateFormat("dd/MM/yyyy")).parse(parts_voo[2]), 
                             Float.parseFloat(parts_voo[3])
                     );
-                    ProcessoServidor.listaDeVoos.add(novaOfertaDeVoo);
+                    serverEngine.cadastraOfertaVoo(novaOfertaDeVoo);
                     break;
                     
                 case "2":
@@ -76,7 +73,7 @@ public class ProcessoServidor {
                             Integer.parseInt(parts_hosp[1]), 
                             Float.parseFloat(parts_hosp[2])
                     );
-                    ProcessoServidor.listaDeHospedagens.add(novaOfertaHospedagem);
+                    serverEngine.cadastraOfertaHospedagem(novaOfertaHospedagem);
                     
                     break;
                 case "3":
@@ -87,5 +84,15 @@ public class ProcessoServidor {
                     break;
             }
         }      
+    }
+
+    private static void makeData() {
+        //cria cinco ofertas de vôo e cinco ofertas de hospedagem
+        serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "São Paulo", 100.00f));
+        serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "Minas Gerais", 115.00f));
+        serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "Florianopolis", 96.00f));
+        serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "Bahia", 350.00f));
+        serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "Rio Grande do Sul", 120.00f));
+        
     }
 }
