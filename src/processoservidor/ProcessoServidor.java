@@ -33,7 +33,7 @@ public class ProcessoServidor {
         menu();
    
     }
-    public static void menu() throws ParseException {
+    public static void menu() throws ParseException, RemoteException {
         Scanner scanner = new Scanner(System.in);
         String option = "";
         
@@ -46,39 +46,53 @@ public class ProcessoServidor {
 
             System.out.print(MENU1 + "Opção: ");
             option = scanner.nextLine();
-
+            
+            float preco;
+            
             switch (option){
                 case "1":
-                    System.out.print("\nDigite a oferta de Vôo conforme o padrão a seguir: "
-                            + "\nOrigem,Destino,Data/De/Ida,Preço\n\nOpção: ");
+                    System.out.print("\nDigite a origem: ");
+                    String origem = "";
+                    origem = scanner.nextLine();
+                    System.out.print("\nDigite o destino: ");
+                    String destino = "";
+                    destino = scanner.nextLine();
+                    System.out.print("\nDigite o preço: ");
+                    preco = scanner.nextFloat();
+                    scanner.nextLine();
                     
-                    String[] parts_voo = scanner.nextLine().split(",");
-                    
-                    OfertaVoo novaOfertaDeVoo = new OfertaVoo(
-                            parts_voo[0], 
-                            parts_voo[1], 
-                            Float.parseFloat(parts_voo[3])
-                    );
+                    OfertaVoo novaOfertaDeVoo = new OfertaVoo(origem, destino, preco);
                     serverEngine.cadastraOfertaVoo(novaOfertaDeVoo);
+                    
                     break;
                     
                 case "2":
-                    System.out.print("\nDigite a oferta de hospedagem conforme padrão a seguir:\n"
-                            + "CidadeOuNomeDoHotel,NumQuartos,Preço\n\nOpção: ");
+                    System.out.print("\nDigite o local: ");
+                    String local = "";
+                    origem = scanner.nextLine();
+                    System.out.print("\nDigite o número de quartos: ");
+                    int quartos;
+                    quartos = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.print("\nDigite o preço: ");
                     
-                    String[] parts_hosp = scanner.nextLine().split(",");
+                    preco = scanner.nextFloat();
+                    scanner.nextLine();
                     
-                    OfertaHospedagem novaOfertaHospedagem = new OfertaHospedagem(
-                            parts_hosp[0], 
-                            Integer.parseInt(parts_hosp[1]), 
-                            Float.parseFloat(parts_hosp[2])
-                    );
+                    OfertaHospedagem novaOfertaHospedagem = new OfertaHospedagem(local, quartos, preco);
                     serverEngine.cadastraOfertaHospedagem(novaOfertaHospedagem);
-                    
                     break;
                 case "3":
+                    for (int i = 0; i < serverEngine.listaPassagens().length; i++){
+                        String passagem = (String)serverEngine.listaPassagens()[i];
+                        System.out.println((i+1) + ". " + passagem );
+                    }
                     break;
                 case "4":
+                    for (int i = 0; i < serverEngine.listaHospedagens().length; i++){
+                        String hospedagem = (String)serverEngine.listaHospedagens()[i];
+                        System.out.println((i+1) + ". " + hospedagem );
+                    }
                     break;
                 default:
                     break;

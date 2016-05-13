@@ -20,6 +20,8 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
     
     private ArrayList<OfertaHospedagem> listaDeHospedagens = new ArrayList();
     private ArrayList<OfertaVoo> listaDeVoos = new ArrayList();
+    private ArrayList<InteresseVoo> listaDeinteressesVoo = new ArrayList();
+    private ArrayList<InteresseHospedagem> listaDeinteressesHospedagem = new ArrayList();
     
     
     public ServerEngine() throws RemoteException{
@@ -43,8 +45,14 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
     }
 
     @Override
-    public void registraInteresse(String cliente, String tipo_interesse) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean registraInteresse(String cliente, String origem, String destino, float preco) throws RemoteException {
+        InteresseVoo int_voo = new InteresseVoo(cliente, origem, destino, preco);
+        return listaDeinteressesVoo.add(int_voo);
+    }
+    @Override
+    public boolean registraInteresse(String cliente, String local, int quartos, float preco) throws RemoteException {
+        InteresseHospedagem int_hosp = new InteresseHospedagem(cliente, local, quartos, preco);
+        return listaDeinteressesHospedagem.add(int_hosp);
     }
 
     @Override
@@ -65,6 +73,9 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
     
     public void cadastraOfertaVoo(OfertaVoo novaOfertaDeVoo){
         listaDeVoos.add(novaOfertaDeVoo);
+        //for(int i = 0, i<listaDeinte){
+        
+        //}
     }
     public void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem){
         listaDeHospedagens.add(novaOfertaDeHospedagem);
