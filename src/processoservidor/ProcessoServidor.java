@@ -85,16 +85,20 @@ public class ProcessoServidor {
                     serverEngine.cadastraOfertaHospedagem(novaOfertaHospedagem);
                     break;
                 case "3":
+                    System.out.print("\n");
                     for (int i = 0; i < serverEngine.listaPassagens().length; i++){
                         String passagem = (String)serverEngine.listaPassagens()[i];
                         System.out.println((i+1) + ". " + passagem );
                     }
+                    System.out.print("\n");
                     break;
                 case "4":
+                    System.out.print("\n");
                     for (int i = 0; i < serverEngine.listaHospedagens().length; i++){
                         String hospedagem = (String)serverEngine.listaHospedagens()[i];
                         System.out.println((i+1) + ". " + hospedagem );
                     }
+                    System.out.print("\n");
                     break;
                 default:
                     break;
