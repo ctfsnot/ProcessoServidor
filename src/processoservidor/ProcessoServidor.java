@@ -6,6 +6,8 @@
 package processoservidor;
 
 import interfaces.InterfaceServidor;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -24,7 +26,7 @@ public class ProcessoServidor {
     private static ServerEngine serverEngine ;
     private static Registry servidorNomes;
     
-    public static void main(String[] args) throws RemoteException, ParseException {
+    public static void main(String[] args) throws RemoteException, ParseException, NotBoundException, MalformedURLException {
         serverEngine = new ServerEngine(); //objeto remoto do servidor        
         servidorNomes = LocateRegistry.createRegistry(8888);
         servidorNomes.rebind("ServerEngine", serverEngine);
@@ -33,7 +35,7 @@ public class ProcessoServidor {
         menu();
    
     }
-    public static void menu() throws ParseException, RemoteException {
+    public static void menu() throws ParseException, RemoteException, NotBoundException, MalformedURLException {
         Scanner scanner = new Scanner(System.in);
         String option = "";
         
@@ -100,7 +102,7 @@ public class ProcessoServidor {
         }      
     }
 
-    private static void makeData() {
+    private static void makeData() throws NotBoundException, MalformedURLException, RemoteException {
         //cria cinco ofertas de vôo e cinco ofertas de hospedagem
         serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "São Paulo", 100.00f));
         serverEngine.cadastraOfertaVoo(new OfertaVoo("Curitiba", "Minas Gerais", 115.00f));

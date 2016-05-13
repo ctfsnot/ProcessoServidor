@@ -5,7 +5,11 @@
  */
 package processoservidor;
 
+import interfaces.InterfaceCliente;
 import interfaces.InterfaceServidor;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteObject;
 import java.rmi.server.UnicastRemoteObject;
@@ -45,18 +49,18 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
     }
 
     @Override
-    public boolean registraInteresse(String cliente, String origem, String destino, float preco) throws RemoteException {
+    public synchronized boolean registraInteresse(String cliente, String origem, String destino, float preco) throws RemoteException {
         InteresseVoo int_voo = new InteresseVoo(cliente, origem, destino, preco);
         return listaDeinteressesVoo.add(int_voo);
     }
     @Override
-    public boolean registraInteresse(String cliente, String local, int quartos, float preco) throws RemoteException {
+    public synchronized boolean registraInteresse(String cliente, String local, int quartos, float preco) throws RemoteException {
         InteresseHospedagem int_hosp = new InteresseHospedagem(cliente, local, quartos, preco);
         return listaDeinteressesHospedagem.add(int_hosp);
     }
 
     @Override
-    public Object[] listaPassagens() throws RemoteException {
+    public synchronized Object[] listaPassagens() throws RemoteException {
         ArrayList<String> results = new ArrayList();
         
         for(int i = 0; i < this.listaDeVoos.size(); i++){
@@ -71,18 +75,35 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
         return results.toArray();
     }
     
-    public void cadastraOfertaVoo(OfertaVoo novaOfertaDeVoo){
+    public synchronized void cadastraOfertaVoo(OfertaVoo novaOfertaDeVoo) throws NotBoundException, MalformedURLException, RemoteException{
         listaDeVoos.add(novaOfertaDeVoo);
-        //for(int i = 0, i<listaDeinte){
-        
-        //}
+        //para cada item na lista de interesses de vôo
+        for(int i = 0; i< this.listaDeinteressesVoo.size(); i++ ){
+            //verifica se os parâmetros combinam com a novaOferta que adicionamos
+            InteresseVoo interesse = listaDeinteressesVoo.get(i);
+            
+            if(interesse.getOrigem().equals(novaOfertaDeVoo.getOrigem())){
+                if(interesse.getDestino().equals(novaOfertaDeVoo.getDestino())){
+                    if(interesse.getPreco() > novaOfertaDeVoo.getPreço()){
+                        //então, chama o método do objeto remoto CLIENTE, informando que há nova oferta
+                        //de interesse.
+                        InterfaceCliente client = (InterfaceCliente) Naming.lookup("rmi://localhost:8888/"+interesse.getCliente());
+                        String toSend = "";
+                        toSend += "De "+ novaOfertaDeVoo.getOrigem();
+                        toSend += " Para "+ novaOfertaDeVoo.getDestino();
+                        toSend += " - R$: " + novaOfertaDeVoo.getPreço();
+                        client.notificaInteresse("\n\n[OFERTA]: " + toSend + "\n\n");
+                    }
+                }
+            }
+        }
     }
-    public void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem){
+    public synchronized void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem){
         listaDeHospedagens.add(novaOfertaDeHospedagem);
     }
 
     @Override
-    public Object[] listaHospedagens() throws RemoteException {
+    public synchronized Object[] listaHospedagens() throws RemoteException {
         ArrayList<String> results = new ArrayList();
         
         for(int i = 0; i < this.listaDeHospedagens.size(); i++){
