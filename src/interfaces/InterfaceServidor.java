@@ -16,8 +16,8 @@ import processoservidor.OfertaVoo;
 public interface InterfaceServidor extends Remote{
     public boolean compraPassagem(int passagemId) throws RemoteException;
     public boolean compraHospedagem(int hospedagemId) throws RemoteException;
-    public boolean registraInteresse(String cliente, String origem, String destino, float preco) throws RemoteException;
-    public boolean registraInteresse(String cliente, String local, int quartos, float preco) throws RemoteException;
+    public boolean registraInteresse(InterfaceCliente cliente, String origem, String destino, float preco) throws RemoteException;
+    public boolean registraInteresse(InterfaceCliente cliente, String local, int quartos, float preco) throws RemoteException;
     public Object[] listaPassagens() throws RemoteException;
     public Object[] listaHospedagens() throws RemoteException;
 }

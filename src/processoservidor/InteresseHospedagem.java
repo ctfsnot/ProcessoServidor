@@ -5,6 +5,8 @@
  */
 package processoservidor;
 
+import interfaces.InterfaceCliente;
+
 /**
  *
  * @author Pepo
@@ -14,13 +16,13 @@ public class InteresseHospedagem {
     private String local;
     private int quartos;
     private float preco;
-    private String cliente;
+    private InterfaceCliente cliente;
     
-    public String getCliente() {
+    public InterfaceCliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(InterfaceCliente cliente) {
         this.cliente = cliente;
     }
     
@@ -48,7 +50,7 @@ public class InteresseHospedagem {
         this.preco = preco;
     }
 
-    public InteresseHospedagem(String cliente, String local, int quartos, float preco) {
+    public InteresseHospedagem(InterfaceCliente cliente, String local, int quartos, float preco) {
         this.cliente = cliente;
         this.local = local;
         this.quartos = quartos;

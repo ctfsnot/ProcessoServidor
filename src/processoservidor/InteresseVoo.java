@@ -5,22 +5,24 @@
  */
 package processoservidor;
 
+import interfaces.InterfaceCliente;
+
 /**
  *
  * @author Pepo
  */
 public class InteresseVoo {
 
-    private String cliente;
+    private InterfaceCliente cliente;
     private String origem;
     private String destino;
     private float preco;
     
-    public String getCliente() {
+    public InterfaceCliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(InterfaceCliente cliente) {
         this.cliente = cliente;
     }
     public String getOrigem() {
@@ -47,7 +49,7 @@ public class InteresseVoo {
         this.preco = preco;
     }
 
-    public InteresseVoo(String cliente, String origem, String destino, float preco) {
+    public InteresseVoo(InterfaceCliente cliente, String origem, String destino, float preco) {
         this.cliente = cliente;
         this.origem = origem;
         this.destino = destino;

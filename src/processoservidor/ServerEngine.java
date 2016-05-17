@@ -49,18 +49,18 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
     }
 
     @Override
-    public synchronized boolean registraInteresse(String cliente, String origem, String destino, float preco) throws RemoteException {
+    public boolean registraInteresse(InterfaceCliente cliente, String origem, String destino, float preco) throws RemoteException {
         InteresseVoo int_voo = new InteresseVoo(cliente, origem, destino, preco);
         return listaDeinteressesVoo.add(int_voo);
     }
     @Override
-    public synchronized boolean registraInteresse(String cliente, String local, int quartos, float preco) throws RemoteException {
+    public boolean registraInteresse(InterfaceCliente cliente, String local, int quartos, float preco) throws RemoteException {
         InteresseHospedagem int_hosp = new InteresseHospedagem(cliente, local, quartos, preco);
         return listaDeinteressesHospedagem.add(int_hosp);
     }
 
     @Override
-    public synchronized Object[] listaPassagens() throws RemoteException {
+    public Object[] listaPassagens() throws RemoteException {
         ArrayList<String> results = new ArrayList();
         
         for(int i = 0; i < this.listaDeVoos.size(); i++){
@@ -75,7 +75,7 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
         return results.toArray();
     }
     
-    public synchronized void cadastraOfertaVoo(OfertaVoo novaOfertaDeVoo) throws NotBoundException, MalformedURLException, RemoteException{
+    public void cadastraOfertaVoo(OfertaVoo novaOfertaDeVoo) throws NotBoundException, MalformedURLException, RemoteException{
         listaDeVoos.add(novaOfertaDeVoo);
         //para cada item na lista de interesses de vôo
         for(int i = 0; i< this.listaDeinteressesVoo.size(); i++ ){
@@ -87,23 +87,23 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
                     if(interesse.getPreco() > novaOfertaDeVoo.getPreço()){
                         //então, chama o método do objeto remoto CLIENTE, informando que há nova oferta
                         //de interesse.
-                        InterfaceCliente client = (InterfaceCliente) Naming.lookup("rmi://localhost:8888/"+interesse.getCliente());
+                        //InterfaceCliente client = (InterfaceCliente) Naming.lookup("rmi://localhost:8888/"+interesse.getCliente());
                         String toSend = "";
                         toSend += "De "+ novaOfertaDeVoo.getOrigem();
                         toSend += " Para "+ novaOfertaDeVoo.getDestino();
                         toSend += " - R$: " + novaOfertaDeVoo.getPreço();
-                        client.notificaInteresse("\n\n[OFERTA]: " + toSend + "\n\n");
+                        interesse.getCliente().notificaInteresse("\n\n[OFERTA]: " + toSend + "\n\n");
                     }
                 }
             }
         }
     }
-    public synchronized void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem){
+    public void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem){
         listaDeHospedagens.add(novaOfertaDeHospedagem);
     }
 
     @Override
-    public synchronized Object[] listaHospedagens() throws RemoteException {
+    public Object[] listaHospedagens() throws RemoteException {
         ArrayList<String> results = new ArrayList();
         
         for(int i = 0; i < this.listaDeHospedagens.size(); i++){
