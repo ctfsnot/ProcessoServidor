@@ -21,17 +21,21 @@ import java.util.ArrayList;
  */
 public class ServerEngine extends UnicastRemoteObject implements InterfaceServidor{
     
-    
+    //array para guardar as ofertas de hospedagem disponíveis
     private ArrayList<OfertaHospedagem> listaDeHospedagens = new ArrayList();
+    //array para guardar as ofertas de passagem disponíveis
     private ArrayList<OfertaVoo> listaDeVoos = new ArrayList();
+    //array para guardar os interesses em passagens
     private ArrayList<InteresseVoo> listaDeinteressesVoo = new ArrayList();
+    //array para guardar os interesses em hospedagens
     private ArrayList<InteresseHospedagem> listaDeinteressesHospedagem = new ArrayList();
     
     
     public ServerEngine() throws RemoteException{
         super();
     }
-    
+    //o método compra de passagem registra uma nova compra de passagem e remove ela da lista
+    //de passagens disponíveis. Ele é synchronized para evitar o acesso concorrente
     @Override
     public synchronized boolean compraPassagem(int passagem) throws RemoteException {
         Object ret = listaDeVoos.remove(passagem);
@@ -39,7 +43,8 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
             return true;
         else return false;
     }
-
+    //o método compra de hospedagem registra uma nova compra de hospedagem e remove ela da lista
+    //de hospedagens disponíveis. Ele é synchronized para evitar o acesso concorrente
     @Override
     public synchronized boolean compraHospedagem(int hospedagem) throws RemoteException {
         Object ret = listaDeHospedagens.remove(hospedagem);
