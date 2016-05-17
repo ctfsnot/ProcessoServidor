@@ -20,6 +20,9 @@ import java.util.Scanner;
 /**
  *
  * @author a1144847
+ * 
+ * o ProcessoServidor apresenta o menu do servidor e registra o servidor ao serviço 
+ * de nomes, além de invocar métodos do serverEngine para executar diversas ações
  */
 public class ProcessoServidor {
 
@@ -27,6 +30,7 @@ public class ProcessoServidor {
     private static Registry servidorNomes;
     
     public static void main(String[] args) throws RemoteException, ParseException, NotBoundException, MalformedURLException {
+        //registra o servidor no serviço de nomes
         serverEngine = new ServerEngine(); //objeto remoto do servidor        
         servidorNomes = LocateRegistry.createRegistry(8888);
         servidorNomes.rebind("ServerEngine", serverEngine);
@@ -35,6 +39,7 @@ public class ProcessoServidor {
         menu();
    
     }
+    //imprime o menu do servidor
     public static void menu() throws ParseException, RemoteException, NotBoundException, MalformedURLException {
         Scanner scanner = new Scanner(System.in);
         String option = "";
@@ -53,6 +58,7 @@ public class ProcessoServidor {
             
             switch (option){
                 case "1":
+                    //a opção '1' cadastra uma nova oferta de passagem(de vôo)
                     System.out.print("\nDigite a origem: ");
                     String origem = "";
                     origem = scanner.nextLine();
@@ -62,13 +68,15 @@ public class ProcessoServidor {
                     System.out.print("\nDigite o preço: ");
                     preco = scanner.nextFloat();
                     scanner.nextLine();
-                    
+                    //cria uma nova OfertaVoo
                     OfertaVoo novaOfertaDeVoo = new OfertaVoo(origem, destino, preco);
+                    //cadasra a nova oferta no serverEngine
                     serverEngine.cadastraOfertaVoo(novaOfertaDeVoo);
                     
                     break;
                     
                 case "2":
+                    //a opção '1' cadastra uma nova oferta de hospedagem
                     System.out.print("\nDigite o local: ");
                     String local = "";
                     origem = scanner.nextLine();
@@ -80,12 +88,15 @@ public class ProcessoServidor {
                     
                     preco = scanner.nextFloat();
                     scanner.nextLine();
-                    
+                    //cria uma nova ofertaHospedagem
                     OfertaHospedagem novaOfertaHospedagem = new OfertaHospedagem(local, quartos, preco);
+                    //cadastra no serverEngine a nova oferta
                     serverEngine.cadastraOfertaHospedagem(novaOfertaHospedagem);
                     break;
                 case "3":
+                    //a opção '3' lista todas as ofertas de passagens disponíveis
                     System.out.print("\n");
+                    //percorre e imprime o array de passagens disponíveis presentes no serverEngine
                     for (int i = 0; i < serverEngine.listaPassagens().length; i++){
                         String passagem = (String)serverEngine.listaPassagens()[i];
                         System.out.println((i+1) + ". " + passagem );
@@ -93,7 +104,9 @@ public class ProcessoServidor {
                     System.out.print("\n");
                     break;
                 case "4":
+                    //a opção '4' lista todas as ofertas de hospedagem disponíveis
                     System.out.print("\n");
+                    //percorre e imprime o array de hospedagens disponíveis presentes no serverEngine
                     for (int i = 0; i < serverEngine.listaHospedagens().length; i++){
                         String hospedagem = (String)serverEngine.listaHospedagens()[i];
                         System.out.println((i+1) + ". " + hospedagem );

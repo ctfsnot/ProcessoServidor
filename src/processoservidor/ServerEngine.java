@@ -52,18 +52,19 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
             return true;
         else return false;
     }
-
+    //o método registra interesse de passagem registra um novo interesse de passagem
     @Override
     public boolean registraInteresse(InterfaceCliente cliente, String origem, String destino, float preco) throws RemoteException {
         InteresseVoo int_voo = new InteresseVoo(cliente, origem, destino, preco);
         return listaDeinteressesVoo.add(int_voo);
     }
+    //o método registra interesse de hospedagem registra um novo interesse de hospedagem
     @Override
     public boolean registraInteresse(InterfaceCliente cliente, String local, int quartos, float preco) throws RemoteException {
         InteresseHospedagem int_hosp = new InteresseHospedagem(cliente, local, quartos, preco);
         return listaDeinteressesHospedagem.add(int_hosp);
     }
-
+    //método para listar todas as passagens disponíveis
     @Override
     public Object[] listaPassagens() throws RemoteException {
         ArrayList<String> results = new ArrayList();
@@ -79,14 +80,15 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
         
         return results.toArray();
     }
-    
+    //método para cadastrar novas ofertas de passagens(de vôos) e para informar ao cliente quando
+    //uma nova oferta mais econômica é cadastrada de acordo com o interesse
     public void cadastraOfertaVoo(OfertaVoo novaOfertaDeVoo) throws NotBoundException, MalformedURLException, RemoteException{
         listaDeVoos.add(novaOfertaDeVoo);
+        //verifica se a nova oferta é melhor que alguma guardada no array de interesses
         //para cada item na lista de interesses de vôo
         for(int i = 0; i< this.listaDeinteressesVoo.size(); i++ ){
             //verifica se os parâmetros combinam com a novaOferta que adicionamos
             InteresseVoo interesse = listaDeinteressesVoo.get(i);
-            
             if(interesse.getOrigem().equals(novaOfertaDeVoo.getOrigem())){
                 if(interesse.getDestino().equals(novaOfertaDeVoo.getDestino())){
                     if(interesse.getPreco() > novaOfertaDeVoo.getPreço()){
@@ -103,10 +105,32 @@ public class ServerEngine extends UnicastRemoteObject implements InterfaceServid
             }
         }
     }
-    public void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem){
+    //método para cadastrar novas ofertas de hospedagem e para informar ao cliente quando
+    //uma nova oferta mais econômica é cadastrada de acordo com o interesse
+    public void cadastraOfertaHospedagem(OfertaHospedagem novaOfertaDeHospedagem) throws RemoteException{
         listaDeHospedagens.add(novaOfertaDeHospedagem);
+        //verifica se a nova oferta é melhor que alguma guardada no array de interesses
+        //para cada item na lista de interesses de hospedagem
+        for(int i = 0; i<this.listaDeinteressesHospedagem.size(); i++){
+            //verifica se os parâmetros combinam com a novaOferta que adicionamos
+            InteresseHospedagem interesseh = listaDeinteressesHospedagem.get(i);
+            if(interesseh.getLocal().equals(novaOfertaDeHospedagem.getLocal())){
+                if(interesseh.getQuartos()== novaOfertaDeHospedagem.getQuartos()){
+                    if(interesseh.getPreco() > novaOfertaDeHospedagem.getPreço()){
+                        //então, chama o método do objeto remoto CLIENTE, informando que há nova oferta
+                        //de interesse.
+                        //InterfaceCliente client = (InterfaceCliente) Naming.lookup("rmi://localhost:8888/"+interesse.getCliente());
+                        String toSend = "";
+                        toSend += "Em "+ novaOfertaDeHospedagem.getLocal();
+                        toSend += ", com "+ novaOfertaDeHospedagem.getQuartos() + " quartos de casal";
+                        toSend += " - R$: " + novaOfertaDeHospedagem.getPreço();
+                        interesseh.getCliente().notificaInteresse("\n\n[OFERTA]: " + toSend + "\n\n");
+                    }
+                }
+            }
+        }
     }
-
+    //método para listar as hospedagens disponíveis
     @Override
     public Object[] listaHospedagens() throws RemoteException {
         ArrayList<String> results = new ArrayList();

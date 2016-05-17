@@ -10,6 +10,9 @@ import java.util.Date;
 /**
  *
  * @author rz
+ * 
+ * essa classe define oferta de passagem com seus atributos, setters e guetters
+ * e seu construtor
  */
 public class OfertaVoo {
 

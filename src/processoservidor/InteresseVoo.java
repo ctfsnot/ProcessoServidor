@@ -10,6 +10,9 @@ import interfaces.InterfaceCliente;
 /**
  *
  * @author Pepo
+ * 
+ * essa classe define o interesse de passagem com seus atributos, setters e guetters
+ * e seu construtor
  */
 public class InteresseVoo {
 
@@ -48,7 +51,7 @@ public class InteresseVoo {
     public void setPreco(float preco) {
         this.preco = preco;
     }
-
+    //construtor
     public InteresseVoo(InterfaceCliente cliente, String origem, String destino, float preco) {
         this.cliente = cliente;
         this.origem = origem;

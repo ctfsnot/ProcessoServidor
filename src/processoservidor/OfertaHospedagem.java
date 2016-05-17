@@ -8,13 +8,16 @@ package processoservidor;
 /**
  *
  * @author rz
+ * 
+ * essa classe define oferta de hospedagem com seus atributos, setters e guetters
+ * e seu construtor
  */
 public class OfertaHospedagem {
 
     private String local;
     private int quartos;
     private float preço;
-    
+    //construtor
     public OfertaHospedagem(String local, int quartos, float preço) {
         this.local = local;
         this.quartos = quartos;

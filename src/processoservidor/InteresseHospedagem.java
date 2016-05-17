@@ -10,6 +10,9 @@ import interfaces.InterfaceCliente;
 /**
  *
  * @author Pepo
+ * 
+ * essa classe define o interesse de hospedagem com seus atributos, setters e guetters
+ * e seu construtor
  */
 public class InteresseHospedagem {
 
@@ -49,7 +52,7 @@ public class InteresseHospedagem {
     public void setPreco(float preco) {
         this.preco = preco;
     }
-
+    //construtor
     public InteresseHospedagem(InterfaceCliente cliente, String local, int quartos, float preco) {
         this.cliente = cliente;
         this.local = local;
